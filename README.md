@@ -6,3 +6,5 @@
 4. [数组和散列](https://github.com/yym-yumeng123/ruby-blogs/blob/master/type.md)
 
 ### Ruby 对象
+
+``Object/words.rb` : 测试 unit-test
