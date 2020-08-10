@@ -36,3 +36,13 @@ Class.is_a? Class
 # 那么Class 父类是什么呢
 p 'Class.superclass'
 p Class.superclass  # 'Module'
+
+
+=begin
+总结:
+
+一个对象有哪些属性
+1. 先看自身存储了那些方法或属性
+2. 再看类定义了那些方法或属性
+3. 再看类的父类定义了那些属性或方法
+=end
