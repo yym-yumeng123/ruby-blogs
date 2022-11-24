@@ -7,6 +7,7 @@
    - 一般多行用 `do...end` , 单行用 `{...}`
    - 代码块作为 `.times` 函数的参数
    - ruby 可以省略 `()`
+
 ```ruby
 7.times do
   p 'one'
@@ -36,7 +37,9 @@ end
 ---
 
 2. `.each`
+
 - `each` 一般用来遍历数组
+
 ```ruby
 name = ['yym', 'xxx', 'yyy']
 name.each do |i|
@@ -54,6 +57,7 @@ end
 ---
 
 3. `for`
+
 ```ruby
 for i in 1..5 # do可省略
   p i
@@ -68,6 +72,7 @@ end
 ---
 
 4. `while/until`
+
 ```ruby
 
 i = 1
@@ -88,6 +93,7 @@ end
 ---
 
 5. `loop`
+
 ```ruby
 
 # 无限循环
@@ -99,5 +105,6 @@ end
 ---
 
 6. 跳出循环
+
 - `break` 表示退出所有循环
 - `next` 表示退出当前循环, 进入下次循环

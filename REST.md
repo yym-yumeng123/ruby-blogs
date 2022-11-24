@@ -65,3 +65,5 @@
 6. 打标签
    - 资源: tagging (动词的名词形式)
    - 动作: create | index | destroy
+
+### 细节

@@ -12,7 +12,3 @@ class ToWordsTest < Test::Unit::TestCase
     assert_equal '3 the Magic Number', to_words('#3, the *Magic, Number*?')
   end
 end
-
-# 如果发现 RubyMine 右键运行出现 teamcity 字样
-# 可以尝试将 D:\RubyMine\RubyMine 2019.3.4\plugins\ruby\rb\testing\patch\testunit\test\unit
-# 改名为 autorunner_x.rb，防止其运行

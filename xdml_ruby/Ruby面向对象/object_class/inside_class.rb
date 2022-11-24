@@ -17,7 +17,7 @@ obj = Myclass.new
 p obj.class  # MyClass
 p obj.my_method  # 2
 
-# 实例变量
+# # 实例变量
 p obj.instance_variables  # [:@v]
 
 p obj.methods

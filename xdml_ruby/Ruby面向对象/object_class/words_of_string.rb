@@ -10,6 +10,7 @@ require 'test/unit'
 
 class ToWordsTest < Test::Unit::TestCase
   def test_1
+    # 只要在 string 上定义了实例, 可以直接 to_words
     assert_equal '3 the Magic Number', '#3, the *Magic, Number*?'.to_words
   end
 end
