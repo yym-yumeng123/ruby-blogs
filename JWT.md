@@ -54,3 +54,46 @@ Authorization: Bearer <token>
 ```
 
 3. `Get /user` 后端接受了请求接口, Authorization 是否有 jwt, 解密
+
+
+### 改成中间件 middleware
+
+1. 在 `lib/` 下新建一个文件, `autoJwt.rb`
+
+```rb
+class AutoJwt
+  def initialize(app)
+    @app = app
+  end
+  def call(env)
+    header = env['HTTP_AUTHORIZATION']
+    jwt = header.split(' ')[1] rescue ''
+    payload = JWT.decode jwt, Rails.application.credentials.hmac_secret, true, { algorithm: 'HS256' } rescue nil
+    env['current_user_id'] = payload[0]['user_id'] rescue nil
+    @status, @headers, @response = @app.call(env)
+    [@status, @headers, @response]
+  end
+end
+```
+
+2. 在 `config/application.rb` 里面
+
+```rb
+require_relative '../lib/auto_jwt.rb'
+
+Bundler.require(*Rails.groups)
+Dotenv::Railtie.load
+module Mangosteen1
+  class Application < Rails::Application
+    config.load_defaults 7.0
+    config.api_only = true
+    config.middleware.use AutoJwt # 引用中间件
+  end
+end
+```
+
+3. 使用
+
+```rb
+user_id = request.env['current_user_id'] rescue nil
+```
