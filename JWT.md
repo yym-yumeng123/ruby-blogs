@@ -97,3 +97,60 @@ end
 ```rb
 user_id = request.env['current_user_id'] rescue nil
 ```
+
+
+### 过期时间 (设置为 2个小时)
+
+```rb
+def generate_jwt
+  # exp 过期时间
+  payload = { user_id: self.id, exp: (Time.now + 2.hours).to_i }
+  JWT.encode payload, Rails.application.credentials.hmac_secret, 'HS256'
+end
+```
+
+
+```rb
+class AutoJwt
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    # jwt 跳过以下路径
+    return @app.call(env) if ['/api/v1/session'].include? env['PATH_INFO']
+
+    header = env["HTTP_AUTHORIZATION"]
+    jwt = header.split(" ")[1] rescue ""
+
+    # 捕获错误
+    begin
+      payload = JWT.decode jwt, Rails.application.credentials.hmac_secret, true, { algorithm: "HS256" } rescue nil
+    rescue JWT::ExpiredSignature
+      return [401, {}, [JSON.generate({reason: 'token已过期'})]]
+    rescue
+      return [401, {}, [JSON.generate({reason: 'token无效'})]]
+    end
+    env["current_user_id"] = payload[0]["user_id"] rescue nil
+    @status, @headers, @response = @app.call(env)
+    [@status, @headers, @response]
+  end
+end
+
+```
+
+### JWT Refresh Token
+
+> 一个用户在登录两个小时后, token 失效
+
+服务端 生成一个随机字符串, 包括时间 (表), 用户就可以发送一个 `/refresh` 携带随机数, 服务端生成一个 jwt, 假设这个 refresh token 随机数 有 7天的 时效, 往复请求
+
+```rb
+user1  xxxx   1天
+user2 yyy 2天
+user1 zzz 3天
+...
+
+```
+
+内容可以是一个随机数 `SecureRandom`; 也可以是一个 jwt
